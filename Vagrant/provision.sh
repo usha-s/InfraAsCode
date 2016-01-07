@@ -12,11 +12,14 @@ service nginx start
     sudo apt-get -y install git
 
 #ansible installation
-sudo apt-get install python-pip python-devel
 
-apt-add-repository ppa:ansible/ansible
-apt-get --yes --force-yes update
-apt-get --yes --force-yes install ansible
-
-
+sudo apt-get -y install software-properties-common
+echo "installing.........."
+pwd
+sudo apt-add-repository -y ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get -y install ansible
+pwd
+echo "installed ansible"
+cat >> /etc/hosts
 
