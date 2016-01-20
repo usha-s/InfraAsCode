@@ -1,0 +1,10 @@
+---
+- hosts: web1
+  sudo: yes
+  gather_facts: no
+  remote_user: vagrant
+
+  tasks:
+    - include: docker.yml
+
+  
