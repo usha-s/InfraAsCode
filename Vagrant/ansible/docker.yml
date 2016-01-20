@@ -1,0 +1,11 @@
+- name: Install git
+  apt: name=git update_cache=yes state=present
+  
+- name: Install d
+      docker: image: python:2.7
+        name: lab
+        pull: missing
+        detach: yes
+        tty: yes
+        command: sleep infinity
+      state: started
