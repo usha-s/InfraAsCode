@@ -1,36 +1,41 @@
 Vagrant.configure(2) do |config|
   
-  config.vm.define "managementnode" do |mgmt|
+  config.vm.define "mgmtnode1" do |mgmt|
   	mgmt.vm.box = "ubuntu/trusty64"
   	mgmt.vm.hostname = "mgmt"
   	#mgmt.vm.network:private_network, type: "dhcp"
-  	mgmt.vm.network:private_network, ip:"192.168.56.103"
+  	mgmt.vm.network:private_network, ip:"192.168.56.107"
   	mgmt.vm.provider "virtualbox" do |vb|
   		vb.memory="256"
   	end  	
   	mgmt.vm.provision "shell", path: "provision.sh"  	
+  	#mgmt.vm.network "forwarded_port", guest: 80, host:8080, id: "nginx"
   end	
 
- config.vm.define "lb" do |lb|
+ config.vm.define "lb1" do |lb|
     	lb.vm.box = "ubuntu/trusty64"
     	lb.vm.hostname = "lb"
-	lb.vm.network:private_network, ip:"192.168.56.104"
+	lb.vm.network:private_network, ip:"192.168.56.106"
 	lb.vm.provider "virtualbox" do |vb|
 	  vb.memory="256"
   	end	
-  	lb.vm.network "forwarded_port", guest: 80, host:8080, id: "nginx"
+  	lb.vm.provision "shell", path: "provisionlb.sh"  
+  	
   end	
 
 #create some web servers
-(1..2).each do |i|
- config.vm.define "web#{i}" do |node|
+(1..3).each do |i|
+ config.vm.define "webnode#{i}" do |node|
     	node.vm.box = "ubuntu/trusty64"
   	node.vm.hostname = "web#{i}"
 	node.vm.network:private_network, ip:"192.168.56.10#{i}"
 	node.vm.provider "virtualbox" do|vb|
 	  vb.memory="256"
   	end	
-  	node.vm.network "forwarded_port", guest: 80, host:"808#{i}", id: "web"
+  	node.vm.provision "ansible" do |ansible|
+	    ansible.playbook = "ansible/ansible-examples-master/tomcat-standalone/site.yml"
+	    ansible.sudo = true
+ 	 end
   end		 
 end
 end
