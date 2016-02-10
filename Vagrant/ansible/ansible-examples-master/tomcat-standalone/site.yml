@@ -1,0 +1,11 @@
+---
+# This playbook deploys a simple standalone Tomcat 7 server. 
+
+- hosts: all 
+  sudo: yes
+  gather_facts: no
+  remote_user: vagrant
+
+  roles:
+   
+    - tomcat
