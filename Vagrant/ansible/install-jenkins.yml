@@ -1,0 +1,5 @@
+- name: Jenkins
+  hosts: mgmtnode1
+  sudo: yes
+  roles:
+    - ansible-jenkins

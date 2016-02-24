@@ -1,0 +1,16 @@
+---
+
+- hosts: mgmtnode1
+  sudo: yes
+  gather_facts: no
+  remote_user: vagrant
+  
+  
+- name: Install ActiveMQ
+  apt: name=activemq pkg=activemq state=latest
+- name: Link ActiveMQ Sites
+  file: src=/etc/activemq/instances-available/main dest=/etc/activemq/instances-enabled/main state=link
+- name: Install ActiveMQ Sites
+  template: src=playbooks/activemq/templates/activemq.xml.j2 dest=/etc/activemq/instances-available/main/activemq.xml
+- name: Boot ActiveMQ
+  service: name=activemq state=running enabled=yes
